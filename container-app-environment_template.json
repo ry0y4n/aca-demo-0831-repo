@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "defaultValue": "japaneast",
+      "type": "String"
+    },
+    "environment_name": {
+      "defaultValue": "myenvironment",
+      "type": "String"
+    },
+    "log_analytics_customer_id": {
+      "defaultValue": "momosuke",
+      "type": "String"
+    },
+    "log_analytics_shared_key": {
+      "defaultValue": "Rh04170417",
+      "type": "SecureString"
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [{
+    "type": "Microsoft.App/managedEnvironments",
+    "apiVersion": "2022-03-01",
+    "name": "[parameters('environment_name')]",
+    "location": "[parameters('location')]",
+    "properties": {
+      // "appLogsConfiguration": {
+      //   "destination": "log-analytics",
+      //   "logAnalyticsConfiguration": {
+      //     "customerId": "[parameters('log_analytics_customer_id')]",
+      //     "sharedKey": "[parameters('log_analytics_shared_key')]"
+      //   }
+      // }
+    }
+  }],
+  "outputs": {}
+}

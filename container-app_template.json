@@ -1,0 +1,80 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containerappName": {
+      "defaultValue": "mycontainerapp",
+      "type": "String"
+    },
+    "location": {
+      "defaultValue": "japaneast",
+      "type": "String"
+    },
+    "environment_name": {
+      "defaultValue": "containerapps-env",
+      "type": "String"
+    }
+    // "container_image": {
+    //   "type": "String"
+    // },
+    // "registry_password": {
+    //   "type": "SecureString"
+    // },
+    // "storage_share_name": {
+    //   "type": "String"
+    // }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.App/containerApps",
+      "apiVersion": "2022-03-01",
+      "name": "[parameters('containerappName')]",
+      "location": "[parameters('location')]",
+      // "tags": {
+      //   "tagName1": "tagValue1",
+      //   "tagName2": "tagValue2"
+      // },
+      "identity": {
+        "type": "None"
+      },
+      "properties": {
+        "configuration": {
+          "ingress": {
+            "allowInsecure": true,
+            "external": true,
+            "targetPort": 80
+          },
+          "registries": [
+            {
+              "passwordSecretRef": "myregistrypassword",
+              "server": "appforiacregistory.azurecr.io",
+              "username": "appforiacregistory"
+            }
+          ],
+          "secrets": [
+            {
+              "name": "myregistrypassword",
+              "value": "lobbjfTuOh+C1kSMg=t3CxFZ13L2/bSj"
+            }
+          ]
+        },
+        "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', parameters('environment_name'))]",
+        "template": {
+          "containers": [
+            {
+              "image": "appforiacregistory.azurecr.io/flask-hello-world:v1",
+              "name": "flask-hello-world"
+              // "resources": {
+              //   "cpu": 0.5,
+              //   "memory": "1.0Gi"
+              // }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}
